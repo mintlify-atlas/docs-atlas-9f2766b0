@@ -1,0 +1,108 @@
+---
+title: "Managing users, professors, and accounts"
+description: "How to create user accounts, assign the Admin, Profesor, or Estudiante role, set up professor profiles, and manage status and two-factor authentication."
+---
+
+User accounts in SWCE control access to the system. Every person who logs in — whether an administrator, professor, or student — has a user account. Professors and students also have a separate profile record that holds their academic and personal information; the user account provides login credentials and role-based permissions, while the profile holds the details.
+
+## Navigating to users
+
+Go to `/usuarios` to see a list of all accounts in the system. From this page you can create new accounts, edit existing ones, and manage roles and status.
+
+## User account fields
+
+| Field | Description |
+|---|---|
+| **Username** | The login name displayed throughout the system. |
+| **Email** | The account's email address, used for login and notifications. |
+| **Photo** | An optional profile image shown in the dashboard and reports. |
+| **Status** | Whether the account is active or inactive. Inactive accounts cannot log in. |
+| **Change password** | A flag that forces the user to set a new password on their next login. |
+
+## Roles
+
+SWCE uses three roles to control what each user can access:
+
+<Tabs>
+  <Tab title="Admin">
+    Full access to all areas of the admin panel, including user management, degree programs, generations, subjects, schedules, grades, and enrollment records.
+  </Tab>
+  <Tab title="Profesor">
+    Access to schedules, grade entry, and course-related views scoped to the subjects and generations they are assigned to.
+  </Tab>
+  <Tab title="Estudiante">
+    Access to the student portal to view schedules, grades, and enrollment status.
+  </Tab>
+</Tabs>
+
+Role assignment happens on the user's edit form. Each user holds one role at a time.
+
+<Note>
+A user account and a professor or student profile are separate records. Assigning the Profesor role to a user does not automatically create a professor profile — you must also fill out the profile at `/profesores`. The same applies to students.
+</Note>
+
+## Creating a professor
+
+Setting up a professor requires three steps: create the user account, assign the Profesor role, and complete the professor profile.
+
+<Steps>
+  <Step title="Create the user account">
+    Navigate to `/usuarios` and click **Nuevo usuario**. Fill in the username, email, and a temporary password. Set the **Change password** flag so the professor is prompted to choose their own password on first login.
+  </Step>
+  <Step title="Assign the Profesor role">
+    In the user creation or edit form, select **Profesor** from the role options and save.
+  </Step>
+  <Step title="Open the professor profile screen">
+    Navigate to `/profesores` and click **Nuevo profesor**.
+  </Step>
+  <Step title="Fill in the professor profile">
+    Complete the profile fields:
+
+    | Field | Description |
+    |---|---|
+    | **Nombre / Apellido paterno / Apellido materno** | The professor's full legal name. |
+    | **CURP** | The national identity code required for official records. |
+    | **Teléfono** | Contact phone number. |
+    | **Perfil** | A short biography or academic profile displayed in reports. |
+    | **Color** | A color used to visually distinguish this professor on schedule grids. |
+    | **Foto** | A profile photo used on the credential PDF and in the dashboard. |
+    | **Status** | Active or inactive. Inactive professors cannot be assigned to subjects. |
+
+  </Step>
+  <Step title="Link the profile to the user account">
+    Select the user account you created in step 1 from the **Usuario** dropdown. This connects the login credentials to the professor profile.
+  </Step>
+  <Step title="Save the profile">
+    Click **Guardar**. The professor is now available for subject assignments at `/asignacion_materias` and a credential PDF can be generated from `/profesores`.
+  </Step>
+</Steps>
+
+## User status
+
+Setting a user's status to **Inactivo** prevents them from logging in without deleting their account or any of their associated records. Reactivate the account at any time by setting the status back to **Activo**.
+
+## Password reset
+
+When you need to force a password change — for example, after a security incident or when onboarding a new user — enable the **Change password** flag on the user's account. The user will be redirected to the password change screen immediately after their next login.
+
+## Two-factor authentication
+
+Two-factor authentication (2FA) is available for every user account. Each user can enable and manage 2FA from their own account settings. As an admin you can see whether 2FA is configured for a user but you cannot bypass it on their behalf.
+
+<Info>
+2FA is managed per user. There is currently no system-wide setting to enforce 2FA for all accounts — users opt in individually.
+</Info>
+
+## The difference between a user account and a profile
+
+<AccordionGroup>
+  <Accordion title="User account">
+    Stored in the users table. Controls login access, role permissions, email, and authentication settings. Every person in SWCE has exactly one user account.
+  </Accordion>
+  <Accordion title="Professor profile (Profesor)">
+    Stored in the profesores table and linked to a user account via `user_id`. Holds academic and personal details — name, CURP, photo, bio, and contact info. Required before a user with the Profesor role can be assigned to subjects or generate a credential PDF.
+  </Accordion>
+  <Accordion title="Student profile (Alumno)">
+    Linked to a user account the same way as professor profiles. Holds enrollment and academic record data. Students are managed through the enrollment screens at `/inscripciones` and `/matricula`.
+  </Accordion>
+</AccordionGroup>

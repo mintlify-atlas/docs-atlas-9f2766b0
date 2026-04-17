@@ -1,0 +1,196 @@
+---
+title: "Deploying SWCE to production"
+description: "Deploy SWCE to production: install PHP and Node dependencies, configure the environment, run migrations, build assets, and set up Nginx or Apache."
+---
+
+This guide walks you through a full production deployment of SWCE on a Linux server. Follow each step in order; skipping steps—especially caching and storage permissions—is the most common cause of post-deployment issues.
+
+## Prerequisites
+
+Before you begin, make sure the following are installed and available on the server:
+
+<CardGroup cols={2}>
+  <Card title="PHP 8.2+" icon="php">
+    Required extensions: `pdo_mysql`, `mbstring`, `xml`, `curl`, `zip`, `gd`, `intl`.
+  </Card>
+  <Card title="Composer" icon="box">
+    The PHP dependency manager. Must be accessible as `composer` on the server's PATH.
+  </Card>
+  <Card title="Node.js 18+" icon="node">
+    Required to compile front-end assets with Vite. Install via your distro's package manager or [nvm](https://github.com/nvm-sh/nvm).
+  </Card>
+  <Card title="MySQL 8" icon="database">
+    Create a dedicated database and user for SWCE before starting. Grant full privileges on the schema.
+  </Card>
+  <Card title="Web server" icon="server">
+    Apache 2.4+ or Nginx. The document root must point to the `public/` subdirectory of the project.
+  </Card>
+</CardGroup>
+
+## Deployment steps
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/xxRevenantx/SWCE.git /var/www/swce
+    ```
+    Replace the target path with wherever you keep web applications on your server.
+  </Step>
+
+  <Step title="Install PHP dependencies">
+    ```bash
+    composer install --no-dev --optimize-autoloader
+    ```
+    The `--no-dev` flag excludes development-only packages. The `--optimize-autoloader` flag generates a class map for faster autoloading.
+  </Step>
+
+  <Step title="Configure the environment file">
+    ```bash
+    cp .env.example .env
+    ```
+    Open `.env` and set all required values: `APP_URL`, `DB_*`, `MAIL_*`, and any other variables for your environment. See the [environment reference](/configuration/environment) for the full list.
+  </Step>
+
+  <Step title="Generate the application key">
+    ```bash
+    php artisan key:generate
+    ```
+    This writes a unique `APP_KEY` to your `.env` file. The key is used to encrypt cookies and session data. Never share it or commit it to version control.
+  </Step>
+
+  <Step title="Set production mode">
+    In your `.env` file, confirm these two values are set:
+    ```ini
+    APP_ENV=production
+    APP_DEBUG=false
+    ```
+  </Step>
+
+  <Step title="Run database migrations">
+    ```bash
+    php artisan migrate --force
+    ```
+    The `--force` flag is required when `APP_ENV=production`. It bypasses the interactive confirmation prompt.
+  </Step>
+
+  <Step title="Seed the database">
+    ```bash
+    php artisan db:seed
+    ```
+    This creates all roles, permissions, reference catalog data, and the default admin account. See [Roles and permissions](/configuration/permissions) for details on what is seeded.
+  </Step>
+
+  <Step title="Build front-end assets">
+    ```bash
+    npm install && npm run build
+    ```
+    Compiles and minifies all CSS and JavaScript into the `public/build/` directory.
+  </Step>
+
+  <Step title="Cache configuration, routes, and views">
+    ```bash
+    php artisan config:cache && php artisan route:cache && php artisan view:cache
+    ```
+    Caching these resources significantly reduces response time in production. Run this command again after any deployment that changes routes, config values, or Blade templates.
+  </Step>
+
+  <Step title="Link the storage directory">
+    ```bash
+    php artisan storage:link
+    ```
+    Creates a symbolic link from `public/storage` to `storage/app/public` so that uploaded files (student documents, photos) are accessible via the web server.
+  </Step>
+
+  <Step title="Set storage and cache directory permissions">
+    The web server process must be able to write to two directories:
+    ```bash
+    chmod -R 775 storage bootstrap/cache
+    chown -R www-data:www-data storage bootstrap/cache
+    ```
+    Replace `www-data` with the user your web server runs as (e.g., `nginx` or `apache`).
+  </Step>
+
+  <Step title="Point the web server document root to /public">
+    Configure your virtual host to serve files from `public/`, not from the project root. See the Nginx example below.
+  </Step>
+</Steps>
+
+<Warning>
+  The `storage/` and `bootstrap/cache/` directories must be writable by the web server process. If they are not, the application will throw a `500` error on the first request.
+</Warning>
+
+## Web server configuration
+
+<Tabs>
+  <Tab title="Nginx">
+    ```nginx
+    server {
+        listen 80;
+        server_name swce.example.com;
+        root /var/www/swce/public;
+
+        index index.php;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+
+        location ~ /\.(?!well-known).* {
+            deny all;
+        }
+    }
+    ```
+    Adjust `server_name`, `root`, and the `fastcgi_pass` socket path for your server. Add TLS using Certbot or your preferred certificate provider.
+  </Tab>
+
+  <Tab title="Apache">
+    Enable `mod_rewrite` and create a virtual host pointing to `public/`:
+
+    ```apacheconf
+    <VirtualHost *:80>
+        ServerName swce.example.com
+        DocumentRoot /var/www/swce/public
+
+        <Directory /var/www/swce/public>
+            AllowOverride All
+            Require all granted
+        </Directory>
+    </VirtualHost>
+    ```
+    SWCE ships with a `public/.htaccess` file that handles URL rewriting automatically when `AllowOverride All` is set.
+  </Tab>
+</Tabs>
+
+## Queue worker
+
+SWCE uses `QUEUE_CONNECTION=database` to process background jobs such as PDF generation. You must run a persistent worker process on the server.
+
+For a simple production setup, run the worker with a process supervisor such as `systemd` or `supervisor`:
+
+```bash
+php artisan queue:work --sleep=3 --tries=3
+```
+
+<Info>
+  Without a running queue worker, background tasks will queue up but never execute. Users may see delayed or missing PDF downloads.
+</Info>
+
+## Quick local setup
+
+For local development, the `composer.json` includes a `setup` script that automates the most common steps:
+
+```bash
+composer run setup
+```
+
+This script runs `composer install`, copies `.env.example` to `.env` if it does not exist, generates the application key, runs migrations, installs Node dependencies, and builds front-end assets in a single command.
+
+<Note>
+  The `setup` script is intended for local and staging environments only. For production, follow the full step-by-step process above to ensure each command is run with the correct flags and in the correct order.
+</Note>

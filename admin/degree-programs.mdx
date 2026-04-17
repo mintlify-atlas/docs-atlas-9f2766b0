@@ -1,0 +1,84 @@
+---
+title: "Managing degree programs (licenciaturas)"
+description: "How to create degree programs (licenciaturas) in SWCE, configure RVOE codes and logos, and understand how programs link to subjects, cohorts, and schedules."
+---
+
+A degree program (licenciatura) is the top-level academic unit in SWCE. Every subject, generation, enrollment, and schedule belongs to a licenciatura. Before you can build out a curriculum or enroll students, at least one degree program must exist in the system.
+
+## Navigating to degree programs
+
+Go to `/licenciaturas` in the admin panel to see the full list of degree programs. From this page you can create new programs and open existing ones to edit their details.
+
+## Degree program fields
+
+Each licenciatura stores the following information:
+
+| Field | Description |
+|---|---|
+| **Nombre** | The full official name of the program (e.g., "Ciencias de la Educación"). |
+| **Slug** | A URL-friendly version of the name used in links and reports (e.g., `ciencias-de-la-educacion`). |
+| **RVOE** | The official government recognition code issued by the SEG or equivalent authority. |
+| **Nombre corto** | An abbreviated display name used in tables and narrow UI elements (e.g., "Ciencias de la Educación"). |
+| **Logo** | An optional image file that represents the program in reports and the student portal. |
+
+<Note>
+RVOE stands for *Reconocimiento de Validez Oficial de Estudios* — the government-issued code that grants a program official academic standing. Not all programs require one; programs without an RVOE can leave this field blank.
+</Note>
+
+## Creating a new degree program
+
+<Steps>
+  <Step title="Open the degree programs list">
+    Navigate to `/licenciaturas`. Click the **Nueva licenciatura** button to open the creation form.
+  </Step>
+  <Step title="Enter the program name">
+    Type the full official name in the **Nombre** field. The slug is generated automatically from the name, but you can edit it manually if needed.
+  </Step>
+  <Step title="Fill in the short name">
+    Enter a condensed version of the name in **Nombre corto**. This appears in report headers, schedule grids, and list views where space is limited.
+  </Step>
+  <Step title="Add the RVOE code (if applicable)">
+    Enter the recognition code exactly as issued (e.g., `SEG/0011/2021`). Leave this field blank if the program does not yet have official recognition.
+  </Step>
+  <Step title="Upload a logo (optional)">
+    Select an image file for the program logo. The logo appears on PDF reports such as student records and grade sheets.
+  </Step>
+  <Step title="Save the program">
+    Click **Guardar**. The new licenciatura appears in the list and is immediately available for generation assignments and subject creation.
+  </Step>
+</Steps>
+
+## Editing an existing degree program
+
+Click the edit icon next to any program in the `/licenciaturas` list to open its form. All fields — name, slug, RVOE, short name, and logo — can be updated at any time. Changes take effect immediately across the system, including in any reports that reference the program.
+
+<Warning>
+Changing the slug of a program after schedules or PDF links have been generated can break existing links. Update the slug only when the program has not yet been used in any reports.
+</Warning>
+
+## How degree programs relate to the rest of SWCE
+
+A licenciatura sits at the center of the academic structure. The diagram below summarizes how it connects to other entities:
+
+<CardGroup cols={2}>
+  <Card title="Subjects (materias)" icon="book">
+    Each subject belongs to exactly one licenciatura and one semester. You manage them at `/materias`.
+  </Card>
+  <Card title="Generations (generaciones)" icon="users">
+    A generation is linked to a licenciatura through the generation assignment at `/asignacion_generaciones`.
+  </Card>
+  <Card title="Enrollments (inscripciones)" icon="clipboard">
+    Student enrollments are recorded under a specific licenciatura, generation, and semester.
+  </Card>
+  <Card title="Schedules (horarios)" icon="calendar">
+    Class schedules are scoped to a licenciatura, generation, and semester combination.
+  </Card>
+</CardGroup>
+
+## Semesters (cuatrimestres)
+
+Semesters define the numbered academic periods within a program — for example, "Cuatrimestre 1", "Cuatrimestre 2", and so on. You manage them at `/cuatrimestres`. Semesters are shared across all licenciaturas, so a semester created in one program is available when assigning subjects in any other program.
+
+<Tip>
+Create all required semesters before you begin adding subjects to a program. Subjects must be linked to both a licenciatura and a semester at the time of creation.
+</Tip>

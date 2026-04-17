@@ -1,0 +1,89 @@
+---
+title: "Managing subjects and curriculum assignments"
+description: "How to create subjects (materias) in a degree program, set credits and gradable status, and assign them to a generation, semester, and professor in SWCE."
+---
+
+A subject (materia) is an individual course within a degree program's curriculum. In SWCE, subjects are created under a specific licenciatura and semester, and then assigned to a generation and professor through the subject assignment screen. This two-step setup separates curriculum definition (what subjects exist) from operational scheduling (who teaches them and to whom).
+
+## Navigating to subjects
+
+Go to `/materias` to view and create subjects. To assign subjects to a generation, semester, and professor, go to `/asignacion_materias`.
+
+## Subject fields
+
+| Field | Description |
+|---|---|
+| **Nombre** | The full name of the subject (e.g., "Nutrición Clínica"). |
+| **Slug** | A URL-friendly identifier used in report links (e.g., `nutricion-clinica`). |
+| **Clave** | The subject code used in official transcripts and grade reports. |
+| **Créditos** | The number of academic credits the subject carries. |
+| **Calificable** | Whether the subject generates a grade record. Subjects marked as not gradable are excluded from grade sheets and transcripts. |
+| **Licenciatura** | The degree program this subject belongs to. |
+| **Cuatrimestre** | The semester within the program's curriculum where this subject is taught. |
+
+## Creating a subject
+
+<Steps>
+  <Step title="Open the subjects list">
+    Navigate to `/materias` and click **Nueva materia**.
+  </Step>
+  <Step title="Enter the subject name and code">
+    Fill in the **Nombre** and **Clave** fields. The slug is generated from the name automatically but can be edited.
+  </Step>
+  <Step title="Set credits and gradable flag">
+    Enter the credit value and choose whether the subject generates grades using the **Calificable** toggle.
+  </Step>
+  <Step title="Select the degree program and semester">
+    Choose the licenciatura and the cuatrimestre where this subject belongs in the curriculum. Both fields are required.
+  </Step>
+  <Step title="Save">
+    Click **Guardar**. The subject is now part of the selected program's curriculum and is available for assignment.
+  </Step>
+</Steps>
+
+<Note>
+Subjects must be assigned to a specific licenciatura and cuatrimestre at creation time. Make sure both the degree program and the relevant semesters exist at `/licenciaturas` and `/cuatrimestres` before adding subjects.
+</Note>
+
+## Assigning subjects to a generation
+
+Creating a subject adds it to the curriculum, but does not schedule it for any active generation. Use the subject assignment screen at `/asignacion_materias` to place a subject into a specific semester for a specific generation and assign it to a professor.
+
+<Steps>
+  <Step title="Open the subject assignment screen">
+    Navigate to `/asignacion_materias`.
+  </Step>
+  <Step title="Select the degree program and semester">
+    Choose the licenciatura and the cuatrimestre for this assignment.
+  </Step>
+  <Step title="Select the subject">
+    Pick the materia you want to assign. Only subjects belonging to the selected licenciatura and cuatrimestre appear in the list.
+  </Step>
+  <Step title="Assign a professor">
+    Select the profesor who will teach this subject. The professor must already have a profile in the system at `/profesores`.
+  </Step>
+  <Step title="Save the assignment">
+    Click **Guardar**. The subject assignment is now active and available for schedule and grade management.
+  </Step>
+</Steps>
+
+<Warning>
+Subjects must be assigned before you build class schedules. The schedule screen at `/horarios` uses the subject assignment as its reference — a subject that has not been assigned cannot be scheduled.
+</Warning>
+
+## How subject assignments connect to the rest of SWCE
+
+<CardGroup cols={2}>
+  <Card title="Schedules (horarios)" icon="calendar">
+    Each schedule entry is attached to a subject assignment. Create assignments before building schedules at `/horarios`.
+  </Card>
+  <Card title="Grades (calificaciones)" icon="star">
+    Grade records are generated per subject assignment. Only subjects marked as **Calificable** appear on grade sheets.
+  </Card>
+  <Card title="Professor assignments" icon="user">
+    The professor linked to a subject assignment determines which professor can enter grades and is listed on the class schedule.
+  </Card>
+  <Card title="Degree program curriculum" icon="book">
+    Subjects belong to exactly one licenciatura and one semester, forming the fixed curriculum that the assignment screen draws from.
+  </Card>
+</CardGroup>

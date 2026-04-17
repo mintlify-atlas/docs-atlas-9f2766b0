@@ -1,0 +1,99 @@
+{
+  "projectType": "saas",
+  "projectName": "SWCE — Sistema Web de Control Escolar",
+  "projectDescription": "A web-based school management system for administering students, professors, schedules, grades, and academic records across multiple degree programs.",
+  "theme": "almond",
+  "primaryColor": "#2563EB",
+  "lightColor": "#EFF6FF",
+  "darkColor": "#1E3A8A",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "installation"
+            ]
+          },
+          {
+            "group": "User Roles",
+            "pages": [
+              "roles/overview",
+              "roles/admin",
+              "roles/professor",
+              "roles/student"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/enrollment",
+              "features/schedules",
+              "features/grades",
+              "features/documents"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "admin/degree-programs",
+              "admin/generations",
+              "admin/subjects",
+              "admin/user-management"
+            ]
+          },
+          {
+            "group": "Configuration & Deployment",
+            "pages": [
+              "configuration/environment",
+              "configuration/permissions",
+              "configuration/deployment"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Role-based access control with Admin, Professor, and Student roles",
+    "Student enrollment and matriculation management",
+    "Academic schedule (horario) creation and assignment",
+    "Grade tracking and report card (boleta) generation",
+    "PDF export for transcripts, credentials, grade reports, and schedules",
+    "Degree program (licenciatura) and generation (generacion) management",
+    "Subject (materia) assignment per generation and semester (cuatrimestre)",
+    "Two-factor authentication support",
+    "Student academic record (expediente) management",
+    "Excel export for student and professor lists"
+  ],
+  "publicApiSurface": [
+    "GET /dashboard — Role-based dashboard router",
+    "GET /usuarios — Admin: user management",
+    "GET /licenciaturas — Admin: degree program management",
+    "GET /cuatrimestres — Admin: semester management",
+    "GET /generaciones — Admin: generation management",
+    "GET /asignacion_generaciones — Admin: assign generations to degree programs",
+    "GET /profesores — Admin: professor management",
+    "GET /materias — Admin: subject management",
+    "GET /asignacion_materias — Admin: assign subjects to degree programs",
+    "GET /horarios — Admin: schedule management",
+    "GET /calificaciones — Admin: grade management",
+    "GET /inscripciones — Admin: enrollment management",
+    "GET /matricula — Admin: student matriculation",
+    "GET /panel-estudiante — Student dashboard",
+    "GET /mi-perfil — Student profile",
+    "GET /mi-horario — Student schedule",
+    "GET /mis-calificaciones — Student grades",
+    "GET /panel-profesor — Professor dashboard",
+    "GET /perfil-profesor — Professor profile",
+    "GET /horario-profesor — Professor schedule",
+    "GET /calificaciones-profesor — Professor grade entry",
+    "GET /matricula/expediente-alumno/{id} — Admin: student academic record PDF",
+    "GET /calificaciones/boleta/{id}/{cuatrimestre} — Admin: grade report card PDF",
+    "GET /admin/horarios/pdf/... — Admin: schedule PDF export"
+  ]
+}

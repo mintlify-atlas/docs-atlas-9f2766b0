@@ -1,0 +1,56 @@
+---
+title: "SWCE: School Control System Overview"
+description: "SWCE manages students, professors, schedules, grades, and degree programs for schools — built for admins, professors, and students."
+---
+
+SWCE (Sistema Web de Control Escolar) is a web-based school management platform built on Laravel 12 and Livewire. It centralizes the operational complexity of running a higher-education institution: enrollment, scheduling, grade tracking, degree program administration, and document generation — all under a single, role-driven interface.
+
+## Who uses SWCE
+
+SWCE is built around three roles, each with a dedicated area and a scoped set of permissions managed by [Spatie Laravel Permission](https://spatie.be/docs/laravel-permission).
+
+<CardGroup cols={3}>
+  <Card title="Admin" icon="shield">
+    Full access to the system. Manages users, degree programs (licenciaturas), generations, cohorts (cuatrimestres), professors, subjects, schedules, enrollments, and grades. Can generate PDF reports including student transcripts, professor credentials, and grade sheets.
+  </Card>
+  <Card title="Profesor" icon="chalkboard-user">
+    Accesses their personal profile, assigned schedule, and the subjects they teach. Can enter and review grades, download class rosters, and export their schedule as a PDF.
+  </Card>
+  <Card title="Estudiante" icon="graduation-cap">
+    Views their own profile, schedule, and academic record. Can download their grade report (boleta) and student file (expediente) as PDFs.
+  </Card>
+</CardGroup>
+
+## Key capabilities
+
+<CardGroup cols={2}>
+  <Card title="Enrollment and student records" icon="users" href="/features/enrollment">
+    Register students, capture contact and academic data, assign them to a generation and degree program, and track their full enrollment history.
+  </Card>
+  <Card title="Schedules and subjects" icon="calendar" href="/features/schedules">
+    Define subjects per degree program, assign professors to subjects, and build weekly schedules with day and time assignments.
+  </Card>
+  <Card title="Grades" icon="list-check" href="/features/grades">
+    Professors enter grades per subject and cohort. Admins and students can view and export grade reports.
+  </Card>
+  <Card title="Document generation" icon="file-pdf" href="/features/documents">
+    Generate PDFs for student transcripts, enrollment lists, professor credentials, grade sheets, and schedules using Laravel DomPDF.
+  </Card>
+</CardGroup>
+
+## System architecture
+
+SWCE is a server-rendered monolith with reactive UI components. There are no separate API or frontend services to deploy.
+
+| Layer | Technology |
+|---|---|
+| Backend framework | Laravel 12 |
+| UI components | Livewire Flux + Livewire Volt |
+| Authentication | Laravel Fortify |
+| Authorization | Spatie Laravel Permission |
+| Database | MySQL 8 |
+| PDF generation | barryvdh/laravel-dompdf |
+| Excel export | maatwebsite/excel |
+| CAPTCHA | laragear/turnstile (Cloudflare Turnstile) |
+| Frontend build | Vite 7 + Tailwind CSS 4 |
+| Internationalization | laravel-lang/common (default locale: `es`) |

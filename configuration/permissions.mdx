@@ -1,0 +1,117 @@
+---
+title: "Roles and permissions in SWCE"
+description: "Every SWCE role and permission listed — Admin, Profesor, and Estudiante — with instructions for assigning roles to users through the admin panel."
+---
+
+SWCE uses [Spatie Laravel Permission](https://spatie.be/docs/laravel-permission) to control what each user can see and do. Every user is assigned exactly one role, and each role carries a fixed set of permissions that unlock the corresponding areas of the system. Roles and permissions are seeded automatically when you run `php artisan db:seed`.
+
+<Note>
+  To initialize all roles and permissions on a fresh installation, run:
+  ```bash
+  php artisan db:seed --class=RoleSeeder
+  ```
+  Running the full database seeder (`php artisan db:seed`) also creates the default admin account and populates reference data.
+</Note>
+
+<Warning>
+  Do not edit the `roles`, `permissions`, or `role_has_permissions` tables directly in a production database. Changes made outside the application may be overwritten by future seed runs and can leave the system in an inconsistent state.
+</Warning>
+
+## Roles
+
+SWCE defines three roles, each representing a distinct actor in the school management workflow.
+
+<CardGroup cols={3}>
+  <Card title="Admin" icon="shield">
+    Full access to all administrative functions: user management, academic catalog, enrollment, grading, and all PDF reports.
+  </Card>
+  <Card title="Profesor" icon="chalkboard">
+    Access to their own schedule, class lists, grade entry, profile, and related PDF exports.
+  </Card>
+  <Card title="Estudiante" icon="graduation-cap">
+    Read-only access to their own schedule, grades, profile, and personal PDF documents.
+  </Card>
+</CardGroup>
+
+## Permission reference
+
+<Tabs>
+  <Tab title="Admin">
+    The Admin role grants access to every section of the administrative panel.
+
+    | Permission | What it unlocks |
+    |---|---|
+    | `admin.dashboard` | Main admin dashboard |
+    | `admin.usuarios` | User management (create, edit, assign roles) |
+    | `admin.licenciaturas` | Degree program catalog |
+    | `admin.cuatrimestres` | Term (cuatrimestre) catalog |
+    | `admin.generaciones` | Generation (cohort) management |
+    | `admin.asignacion_generaciones` | Assigning students to generations |
+    | `admin.inscripciones` | Enrollment management |
+    | `admin.matricula` | Student enrollment list |
+    | `admin.matricula.editar_alumno` | Editing individual student enrollment records |
+    | `admin.profesores` | Teacher management |
+    | `admin.materias` | Subject catalog |
+    | `admin.asignacion_materias` | Assigning subjects to teachers and groups |
+    | `admin.horarios` | Schedule management |
+    | `admin.calificaciones` | Grade management |
+    | `admin.pdf.expediente_alumno` | Generate student academic record PDF |
+    | `admin.pdf.credencial_profesor` | Generate teacher credential PDF |
+    | `admin.pdf.lista_matricula` | Generate enrollment list PDF |
+    | `admin.pdf.boleta_calificacion` | Generate grade report card PDF |
+    | `admin.pdf.horario` | Generate schedule PDF |
+    | `admin.pdf.calificaciones` | Generate grades PDF |
+  </Tab>
+
+  <Tab title="Profesor">
+    The Profesor role is scoped to the teacher's own assignments and students.
+
+    | Permission | What it unlocks |
+    |---|---|
+    | `profesor.dashboard` | Teacher dashboard |
+    | `profesor.perfil` | Personal profile management |
+    | `profesor.horario` | View own teaching schedule |
+    | `profesor.calificaciones` | Enter and review grades for assigned groups |
+    | `profesor.pdf.horario` | Download own schedule as PDF |
+    | `profesor.pdf.lista_alumnos` | Download class roster PDF |
+    | `profesor.documentos` | Access to class lists and documents |
+    | `profesor.pdf.calificaciones` | Download grades PDF for assigned groups |
+  </Tab>
+
+  <Tab title="Estudiante">
+    The Estudiante role provides read-only access to the student's own academic information.
+
+    | Permission | What it unlocks |
+    |---|---|
+    | `estudiante.dashboard` | Student dashboard |
+    | `estudiante.perfil` | Personal profile view |
+    | `estudiante.horario` | View own class schedule |
+    | `estudiante.calificaciones` | View own grades |
+    | `estudiante.pdf.mi-boleta` | Download personal grade report card PDF |
+    | `estudiante.pdf.horario` | Download own schedule PDF |
+    | `estudiante.pdf.mi-expediente` | Download personal academic record PDF |
+  </Tab>
+</Tabs>
+
+## Assigning a role to a user
+
+Roles are assigned through the admin panel. You do not need to use the command line or touch the database.
+
+<Steps>
+  <Step title="Open the Users section">
+    Log in as an Admin and navigate to **Usuarios** (`/usuarios`) in the sidebar.
+  </Step>
+  <Step title="Open the user record">
+    Find the user in the list and click their name or the edit action to open their profile.
+  </Step>
+  <Step title="Select a role">
+    In the user form, choose the appropriate role from the **Rol** dropdown: `Admin`, `Profesor`, or `Estudiante`.
+  </Step>
+  <Step title="Save">
+    Save the form. The new permissions take effect the next time the user logs in or their session is refreshed.
+  </Step>
+</Steps>
+
+<Info>
+  A user can only hold one role at a time. Assigning a new role replaces the previous one.
+</Info>

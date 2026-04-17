@@ -1,0 +1,83 @@
+---
+title: "Managing student generations and cohorts"
+description: "How to create student generations (cohorts), assign them to degree programs, and connect them to enrollments, schedules, and subjects in SWCE."
+---
+
+A generation (generación) represents a student cohort — the group of students who begin a degree program together in the same intake year or cycle. In SWCE, a generation is first created as a standalone record and then linked to one or more degree programs through the generation assignment screen. This two-step approach lets the same generation identifier (for example, "2024") appear across multiple licenciaturas.
+
+## Navigating to generations
+
+Go to `/generaciones` to view, create, and manage all generations in the system. To link an existing generation to a degree program, go to `/asignacion_generaciones`.
+
+## Generación fields
+
+| Field | Description |
+|---|---|
+| **Generación** | The identifying name or year of the cohort (e.g., `2024`, `2024-A`). |
+| **Status** | Whether the generation is currently active or inactive. Inactive generations are hidden from enrollment and scheduling screens. |
+
+## Creating a generation
+
+<Steps>
+  <Step title="Open the generations list">
+    Navigate to `/generaciones` and click **Nueva generación**.
+  </Step>
+  <Step title="Enter the generation name">
+    Type the cohort identifier in the **Generación** field. Use a consistent naming convention across all programs — for example, the intake year or a year-and-cycle code.
+  </Step>
+  <Step title="Set the status">
+    Leave the status as **Activo** for a generation that is currently enrolling or in progress. Set it to **Inactivo** if you are pre-creating records for a future cohort that is not yet open.
+  </Step>
+  <Step title="Save">
+    Click **Guardar**. The generation is now available to assign to degree programs.
+  </Step>
+</Steps>
+
+<Tip>
+Create the generation before you try to enroll students or build schedules. Enrollment and scheduling screens require a generation to already exist and be assigned to the target degree program.
+</Tip>
+
+## Assigning a generation to a degree program
+
+Creating a generation does not automatically connect it to any licenciatura. You must make this link explicitly at `/asignacion_generaciones`.
+
+<Steps>
+  <Step title="Open the generation assignment screen">
+    Navigate to `/asignacion_generaciones`.
+  </Step>
+  <Step title="Select the degree program">
+    Choose the licenciatura this generation belongs to.
+  </Step>
+  <Step title="Select the generation">
+    Pick the generation you created in the previous section.
+  </Step>
+  <Step title="Set the order">
+    Enter an order number to control how this generation appears relative to others within the same program (lower numbers appear first).
+  </Step>
+  <Step title="Save the assignment">
+    Click **Guardar**. The generation is now available for enrollments, schedules, and grade records within the selected program.
+  </Step>
+</Steps>
+
+## How generations connect to the rest of SWCE
+
+Once a generation is created and assigned to a degree program, it participates in several areas of the system:
+
+<CardGroup cols={2}>
+  <Card title="Enrollments (inscripciones)" icon="clipboard">
+    Students are enrolled into a specific generation and semester. The generation must be assigned to the licenciatura before enrollment is possible.
+  </Card>
+  <Card title="Schedules (horarios)" icon="calendar">
+    Class schedules are filtered by licenciatura, generation, and semester. A generation must be assigned before schedules can be built for it.
+  </Card>
+  <Card title="Grades (calificaciones)" icon="star">
+    Grade records are tied to a subject assignment that includes the generation's degree program and semester.
+  </Card>
+  <Card title="Subjects (materias)" icon="book">
+    Subject assignments at `/asignacion_materias` are linked to the same licenciatura and semester combination used by the generation.
+  </Card>
+</CardGroup>
+
+<Note>
+A single generation (e.g., "2024") can be assigned to multiple degree programs. The assignment record tracks the link between each licenciatura and the generation independently, so the same cohort year can appear in Administración Empresarial and Ciencias de la Educación at the same time.
+</Note>

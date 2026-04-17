@@ -1,0 +1,85 @@
+---
+title: "Admin role: full system control"
+description: "Admins manage every aspect of SWCE — users, academic structure, enrollment, professors, subjects, schedules, grades, and PDF document exports."
+---
+
+The Admin role has unrestricted access to SWCE. From a single panel, an Admin can configure the entire academic structure, manage all users, oversee enrollment and matriculation, and generate official PDF documents. Every other role operates within the boundaries that an Admin sets up.
+
+<Note>
+  These pages and actions are only accessible to accounts with the **Admin** role. Attempting to visit an admin URL with a different role will be blocked.
+</Note>
+
+## Admin dashboard
+
+After logging in, Admins land on the admin dashboard at `/panel-administrador`. This is the central hub that provides an overview of the system and links to all administrative sections.
+
+## Admin capabilities
+
+<AccordionGroup>
+  <Accordion title="User management">
+    The Users page (`/usuarios`) is where all system accounts live. From here you can:
+
+    - Create new user accounts for admins, professors, and students
+    - Assign or change a user's role (Admin, Profesor, or Estudiante)
+    - Update user details, status, and passwords
+    - Deactivate or remove accounts
+  </Accordion>
+
+  <Accordion title="Academic structure">
+    SWCE models your institution's academic hierarchy across three pages:
+
+    - **Degree programs** (`/licenciaturas`) — Create and manage the degree programs (licenciaturas) offered by the institution.
+    - **Terms** (`/cuatrimestres`) — Define the academic terms (cuatrimestres) within each degree program.
+    - **Generations** (`/generaciones`) — Manage student cohorts (generaciones) and assign them to degree programs via `/asignacion_generaciones`.
+  </Accordion>
+
+  <Accordion title="Enrollment and matriculation">
+    - **Enrollment** (`/inscripciones`) — Register students into the system at the start of an academic period.
+    - **Matriculation** (`/matricula`) — View and manage the full list of enrolled students. You can also edit individual student records at `/matricula/editar-alumno/{id}`.
+  </Accordion>
+
+  <Accordion title="Professor management">
+    The Professors page (`/profesores`) lists all professor accounts. From here you can review professor profiles and generate their credential cards as PDF documents.
+  </Accordion>
+
+  <Accordion title="Subject management">
+    - **Subjects** (`/materias`) — Define the subjects (materias) available in the curriculum.
+    - **Subject assignment** (`/asignacion_materias`) — Assign subjects to professors and link them to specific degree programs, generations, and terms.
+  </Accordion>
+
+  <Accordion title="Schedule management">
+    The Schedules page (`/horarios`) lets you build and manage class schedules. Once a schedule is configured, you can export it as a PDF filtered by degree program, generation, and term.
+  </Accordion>
+
+  <Accordion title="Grade management">
+    The Grades page (`/calificaciones`) gives you a system-wide view of all student grades. You can review grades by subject, generation, and term, and generate official grade reports.
+  </Accordion>
+</AccordionGroup>
+
+## PDF exports
+
+Admins can generate several official PDF documents directly from the system:
+
+<CardGroup cols={2}>
+  <Card title="Student academic record (Expediente)" icon="file-user">
+    A complete academic record for an individual student, accessible from the matriculation detail page.
+  </Card>
+  <Card title="Report card (Boleta de calificaciones)" icon="file-lines">
+    A grades report card for a student for a specific term, generated from the Grades section.
+  </Card>
+  <Card title="Professor credential (Credencial)" icon="id-card">
+    An official credential card for a professor, generated from the Professors section.
+  </Card>
+  <Card title="Schedule PDF (Horario)" icon="calendar">
+    A printable class schedule filtered by degree program, generation, and term.
+  </Card>
+  <Card title="General grades report (Calificaciones generales)" icon="chart-bar">
+    A grades summary across an entire group, filtered by degree program, generation, and term.
+  </Card>
+  <Card title="Student kardex (Kardex)" icon="table">
+    A full academic transcript for an individual student showing all recorded grades across terms.
+  </Card>
+  <Card title="Enrollment list (Lista de matrícula)" icon="list">
+    A filtered list of enrolled students, exportable with optional filters by degree program, generation, and term.
+  </Card>
+</CardGroup>

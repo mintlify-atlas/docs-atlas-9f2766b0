@@ -1,0 +1,73 @@
+---
+title: "User roles in SWCE"
+description: "SWCE has three roles — Admin, Profesor, and Estudiante — each with a dedicated portal and a specific set of actions they can perform in the system."
+---
+
+Every account in SWCE is assigned exactly one role. Your role determines which portal you land on after logging in and which actions you can take. Roles are assigned by an Admin through the user management panel; you cannot change your own role.
+
+<CardGroup cols={3}>
+  <Card title="Admin" icon="shield-check" href="/roles/admin">
+    Full control over the system: users, academic structure, enrollment, schedules, grades, and PDF exports.
+  </Card>
+  <Card title="Profesor" icon="chalkboard-user" href="/roles/professor">
+    Access to the teaching portal: personal schedule, grade entry for assigned subjects, and student list exports.
+  </Card>
+  <Card title="Estudiante" icon="graduation-cap" href="/roles/student">
+    Self-service academic portal: personal schedule, grades, and downloadable documents such as the report card and academic record.
+  </Card>
+</CardGroup>
+
+## What each role can do
+
+The table below summarizes the main capabilities across the three roles.
+
+<Tabs>
+  <Tab title="Admin">
+    | Capability | Available |
+    |---|---|
+    | Manage users | Yes |
+    | Manage degree programs (licenciaturas) | Yes |
+    | Manage terms (cuatrimestres) | Yes |
+    | Manage generations (generaciones) | Yes |
+    | Manage enrollment and matriculation | Yes |
+    | Manage professors | Yes |
+    | Manage subjects and assignments | Yes |
+    | Manage schedules | Yes |
+    | Enter and review grades | Yes |
+    | Export PDFs (expediente, boleta, credencial, horario, kardex, lista matrícula) | Yes |
+    | View own schedule | No |
+    | Enter grades for assigned subjects | No |
+  </Tab>
+  <Tab title="Profesor">
+    | Capability | Available |
+    |---|---|
+    | Manage users | No |
+    | Manage academic structure | No |
+    | View personal profile | Yes |
+    | View assigned class schedule | Yes |
+    | Enter grades for assigned subjects | Yes |
+    | View student lists | Yes |
+    | Export schedule PDF | Yes |
+    | Export student list PDF | Yes |
+  </Tab>
+  <Tab title="Estudiante">
+    | Capability | Available |
+    |---|---|
+    | Manage users | No |
+    | Manage academic structure | No |
+    | View personal profile and academic info | Yes |
+    | View current semester schedule | Yes |
+    | View grades per subject | Yes |
+    | Download report card (boleta) | Yes |
+    | Download schedule PDF | Yes |
+    | Download academic record (expediente) | Yes |
+  </Tab>
+</Tabs>
+
+## How roles are assigned
+
+Only an Admin can assign or change a user's role. Roles are set from the **Users** section of the admin panel (`/usuarios`). When creating or editing a user, the Admin selects the appropriate role — Admin, Profesor, or Estudiante — and the user will have access to that role's portal the next time they log in.
+
+<Note>
+  A user can only hold one role at a time. If a user needs different access, an Admin must update their role from the Users management page.
+</Note>

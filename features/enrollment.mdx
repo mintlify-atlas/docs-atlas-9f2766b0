@@ -1,0 +1,107 @@
+---
+title: "Student enrollment and matriculation"
+description: "How to enroll students through inscripción, manage matriculation records, upload documents, and edit student personal and academic data in SWCE."
+---
+
+Enrollment in SWCE is split into two distinct phases: **inscripción** and **matrícula**. Inscripción is the initial registration step where a new student is formally admitted into a program. Matrícula is the ongoing management of that student's full academic record — their personal data, academic identifiers, documentation, and active enrollments across cuatrimestres. Together, these two phases form the complete lifecycle of a student's presence in the system.
+
+## Inscripción vs. matrícula
+
+<CardGroup cols={2}>
+  <Card title="Inscripción" icon="user-plus">
+    The first-time enrollment process. Registers a student into a licenciatura, generación, and cuatrimestre, creating the foundational record that links them to the academic program.
+  </Card>
+  <Card title="Matrícula" icon="id-card">
+    Full record management for an already-enrolled student. Covers personal data, academic identifiers, documentation uploads, and editing existing profiles.
+  </Card>
+</CardGroup>
+
+## Data collected during enrollment
+
+When a student is enrolled, SWCE captures information across four sections.
+
+<AccordionGroup>
+  <Accordion title="Personal data (Alumno)" defaultOpen={true}>
+    The core identity fields stored for every student:
+
+    | Field | Description |
+    |---|---|
+    | `nombre` | First name |
+    | `apellido_paterno` | Paternal surname |
+    | `apellido_materno` | Maternal surname |
+    | `fecha_nacimiento` | Date of birth |
+    | `curp` | CURP (18-character national ID, must be unique) |
+    | `sexo` | Sex — `M` (male) or `F` (female) |
+  </Accordion>
+
+  <Accordion title="Academic data (Datos escolares)">
+    Generated or assigned once the student has been inscribed:
+
+    | Field | Description |
+    |---|---|
+    | `matricula` | Unique student ID number |
+    | `folio` | Administrative folio number (optional) |
+    | `foto` | Profile photo |
+
+    The academic record also links the student to their licenciatura, generación, and cuatrimestre through the inscription record.
+  </Accordion>
+
+  <Accordion title="Contact data (Datos de contacto)">
+    Address, phone, and emergency contact information collected as part of the student profile. This information is accessible and editable from the student's matricula record.
+  </Accordion>
+
+  <Accordion title="Documentation (Documentación)">
+    Uploaded supporting documents required for enrollment:
+
+    | Document | Field |
+    |---|---|
+    | CURP document | `url_curp` |
+    | Birth certificate | `url_acta_nacimiento` |
+    | Prior studies certificate | `url_certificado_estudios` |
+
+    <Note>
+      All three documents are optional in the system, but your institution may require them before finalizing enrollment. Check with your academic coordinator.
+    </Note>
+  </Accordion>
+</AccordionGroup>
+
+## Enrollment workflow
+
+<Steps>
+  <Step title="Go to Inscripciones">
+    Navigate to **Inscripciones** in the admin sidebar. This screen lists all existing enrollment records and provides the form to register a new student.
+  </Step>
+  <Step title="Create the inscription">
+    Fill in the student's personal data (nombre, apellidos, CURP, date of birth, sex) and select the target licenciatura, generación, and cuatrimestre. Each combination of student + licenciatura + generación + cuatrimestre must be unique.
+  </Step>
+  <Step title="Confirm the enrollment date">
+    Set the `fecha_inscripcion`. This date is recorded on the inscription record and appears on generated documents such as the expediente.
+  </Step>
+  <Step title="Complete the academic record">
+    After the inscription is saved, go to **Matrícula** to assign the student's matricula number, folio, and profile photo under Datos escolares.
+  </Step>
+  <Step title="Upload required documents">
+    From the student's matricula profile, upload the CURP document, birth certificate, and certificate of prior studies in the Documentación section.
+  </Step>
+  <Step title="Review the contact record">
+    Complete the student's contact information (Datos de contacto) so that the institution has current phone and address details on file.
+  </Step>
+</Steps>
+
+## Editing a student record
+
+To make changes to an enrolled student's data, go to **Matrícula** and locate the student in the list. Click the edit action to open the student's full profile at:
+
+```
+/matricula/editar-alumno/{id}
+```
+
+From this screen you can update personal fields, academic identifiers, contact information, and documentation files.
+
+<Warning>
+  Changing a student's CURP after initial enrollment will fail if the new value is already registered to another student. CURPs must be unique across all student records.
+</Warning>
+
+## Inscription status
+
+Each inscription record carries a `status` flag (active by default). An inactive status indicates the student's enrollment in that specific cuatrimestre has been suspended or closed, without deleting the record.

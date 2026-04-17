@@ -1,0 +1,79 @@
+---
+title: "Recording and reviewing student grades"
+description: "How professors enter grades in SWCE, how admins review class-wide results and generate transcripts, and how students access their boleta report cards."
+---
+
+Grades in SWCE are linked to a student's inscription record and to the specific subject-professor assignment (asignación de materia) for which the grade applies. Each grade entry stores a numeric score (up to two decimal places) and a capture date. This design allows the system to produce per-student report cards (boletas), class-wide grade summaries, and full academic transcripts (kardex) — all exportable as PDFs.
+
+## Professor: entering grades
+
+Professors record grades for the subjects they are assigned to teach.
+
+<Steps>
+  <Step title="Go to Calificaciones">
+    Navigate to **Calificaciones** in the professor panel. The screen lists the subjects you are currently assigned to, grouped by licenciatura, generación, and cuatrimestre.
+  </Step>
+  <Step title="Select a subject">
+    Choose the subject for which you want to enter or update grades. The student roster for that subject appears automatically.
+  </Step>
+  <Step title="Enter the grades">
+    For each student in the list, enter their numeric grade. Grades are stored as decimal values (e.g., `8.5`, `9.0`). Set the capture date if required.
+  </Step>
+  <Step title="Save">
+    Save the grades. They are immediately visible to the admin and to each student in their own grades view.
+  </Step>
+</Steps>
+
+<Warning>
+  Grades submitted by a professor are visible to students and admins right away. Review entries carefully before saving, as corrections require returning to this screen and updating the value.
+</Warning>
+
+## Admin: managing grades
+
+Admins have a full view of all grades across every licenciatura, generación, and cuatrimestre.
+
+Navigate to **Calificaciones** in the admin panel at `/calificaciones`. From there you can:
+
+- Filter the grade list by licenciatura, generación, and cuatrimestre.
+- View per-student results for any subject.
+- Download the class-wide **Calificaciones generales** report as a PDF.
+- Download individual **Boletas de calificaciones** for any student and cuatrimestre.
+- Open a student's **Kardex** to see their full academic transcript.
+
+## Student: viewing grades
+
+Students access their own grades at `/mis-calificaciones`. The view shows all recorded grades organized by subject and cuatrimestre.
+
+<Steps>
+  <Step title="Go to Mis calificaciones">
+    Open **Mis calificaciones** from the student panel. Your grades are listed for each subject in your current enrollment.
+  </Step>
+  <Step title="Download your boleta">
+    To get a printable report card for a specific cuatrimestre, click the download option next to that term. The PDF opens in the browser at:
+
+    ```
+    /mis-calificaciones/mi-boleta/{cuatrimestre}
+    ```
+  </Step>
+</Steps>
+
+## Available grade reports
+
+<CardGroup cols={2}>
+  <Card title="Boleta de calificaciones" icon="file-lines">
+    A single student's report card for one cuatrimestre. Available to both the student and the admin. The PDF is named after the student and cuatrimestre number.
+  </Card>
+  <Card title="Calificaciones generales" icon="table">
+    A class-wide grade matrix showing all students and all subjects for a given licenciatura, generación, and cuatrimestre. Admin only. Generated in landscape format.
+  </Card>
+  <Card title="Kardex del alumno" icon="scroll">
+    The student's complete academic transcript across all cuatrimestres. Includes a per-term average and a cumulative overall average. Admin access at `/calificaciones/kardex-alumno/{alumno}`.
+  </Card>
+  <Card title="Boleta (admin)" icon="file-pdf">
+    Admin-generated boleta accessible at `/calificaciones/boleta/{id}/{cuatrimestre}`, where `id` is the inscription ID and `cuatrimestre` is the cuatrimestre ID.
+  </Card>
+</CardGroup>
+
+## How averages are calculated
+
+Averages shown on reports are **truncated to one decimal place** — they are not rounded. For example, a raw average of 8.76 is displayed as 8.7, not 8.8. This applies to both per-cuatrimestre averages on the kardex and the overall cumulative average.

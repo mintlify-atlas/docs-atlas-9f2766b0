@@ -1,0 +1,89 @@
+---
+title: "Creating and managing class schedules"
+description: "How admins build class schedules in SWCE by mapping days and times to subject assignments, and how professors and students view and export their schedules."
+---
+
+A **horario** in SWCE is a class schedule scoped to a specific combination of licenciatura, generación, and cuatrimestre. Each entry in the schedule maps a day of the week and a time slot to a subject-professor assignment (asignación de materia). This structure lets the system display tailored schedules to admins, professors, and students, and generate printable PDF versions for each audience.
+
+## How schedules are structured
+
+Each schedule entry (horario) contains the following information:
+
+| Field | Description |
+|---|---|
+| `hora` | Class time (e.g., "08:00 - 09:30") |
+| `dia` | Day of the week, referenced from the Días catalog |
+| `licenciatura` | The degree program the schedule belongs to |
+| `generacion` | The student generation |
+| `cuatrimestre` | The term (cuatrimestre) |
+| `asignacion_materia` | The subject-professor pairing for this slot |
+
+## Admin: creating a schedule
+
+Admins manage all schedules from the **Horarios** section.
+
+<Steps>
+  <Step title="Go to Horarios">
+    Navigate to **Horarios** in the admin panel. The screen shows existing schedules grouped by licenciatura, generación, and cuatrimestre.
+  </Step>
+  <Step title="Select the target group">
+    Choose the licenciatura, generación, and cuatrimestre for which you want to build the schedule. Only subjects already assigned to that program can be added.
+  </Step>
+  <Step title="Add schedule entries">
+    For each class session, select the day, enter the time, and pick the subject-professor assignment (asignación de materia). Repeat for each subject that appears in the timetable.
+  </Step>
+  <Step title="Review and save">
+    Once all entries are saved, the schedule is immediately visible to professors and students assigned to that group.
+  </Step>
+</Steps>
+
+<Note>
+  Subjects must be assigned to the generación before they can be added to a schedule. If a subject does not appear in the selector, go to **Asignación de materias** first and link it to the appropriate licenciatura, generación, and cuatrimestre.
+</Note>
+
+## Viewing schedules by role
+
+<Tabs>
+  <Tab title="Admin">
+    Admins can view any schedule by selecting the licenciatura, generación, and cuatrimestre on the Horarios screen. They can also export any schedule as a PDF.
+
+    **Export URL pattern:**
+    ```
+    /admin/horarios/pdf/licenciatura/{slug}/generacion/{gen}/cuatrimestre/{slug}
+    ```
+  </Tab>
+  <Tab title="Professor">
+    Each professor sees only the schedule entries where they are assigned as the instructor. Professors access their schedule at:
+
+    ```
+    /horario-profesor
+    ```
+
+    A PDF version is also available:
+
+    ```
+    /profesor/pdf/horario/{profesor}
+    ```
+  </Tab>
+  <Tab title="Student">
+    Students see the full schedule for their enrolled licenciatura, generación, and cuatrimestre. They access it at:
+
+    ```
+    /mi-horario
+    ```
+
+    To download a PDF copy:
+
+    ```
+    /mi-horario/ver-horario
+    ```
+  </Tab>
+</Tabs>
+
+## Exporting schedules as PDF
+
+SWCE can generate a printable schedule PDF for any audience. The admin export includes full program details (licenciatura name, generación, cuatrimestre number). The professor and student exports are personalized to their respective assignments.
+
+<Tip>
+  Use the PDF export when distributing schedules at the start of a term. The generated file is named automatically using the licenciatura, generación, and cuatrimestre identifiers.
+</Tip>

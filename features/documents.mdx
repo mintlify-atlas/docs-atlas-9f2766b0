@@ -1,0 +1,150 @@
+---
+title: "PDF documents and academic exports"
+description: "All PDF documents in SWCE — report cards, academic records, credentials, schedules, and grade reports — with URL patterns and role-based access details."
+---
+
+SWCE can generate a range of PDF documents that cover the full academic lifecycle — from student enrollment records and class schedules to individual report cards and complete academic transcripts. Each document is accessible from a specific URL, and access is restricted by role so that students, professors, and admins each see only what is relevant to them.
+
+## Document index
+
+<AccordionGroup>
+  <Accordion title="Expediente del alumno" icon="folder-open">
+    A full student dossier that consolidates personal data, academic identifiers, and enrollment details for a single student.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Admin |
+    | URL | `/matricula/expediente-alumno/{id}` |
+    | Parameter | `id` — the inscription record ID |
+    | Paper size | Letter, portrait |
+
+    The file is named automatically using the student's full name in uppercase (e.g., `EXPEDIENTE_JUAN_GARCIA_LOPEZ.pdf`).
+  </Accordion>
+
+  <Accordion title="Boleta de calificaciones" icon="file-lines">
+    A report card listing all grades for a student in a specific cuatrimestre, including the licenciatura, generación, and term.
+
+    <Tabs>
+      <Tab title="Admin">
+        | Detail | Value |
+        |---|---|
+        | Who can access | Admin |
+        | URL | `/calificaciones/boleta/{id}/{cuatrimestre}` |
+        | Parameters | `id` — inscription ID; `cuatrimestre` — cuatrimestre ID |
+
+        The file is named using the student's name and cuatrimestre number.
+      </Tab>
+      <Tab title="Student">
+        | Detail | Value |
+        |---|---|
+        | Who can access | Student (own boleta only) |
+        | URL | `/mis-calificaciones/mi-boleta/{cuatrimestre}` |
+        | Parameter | `cuatrimestre` — the cuatrimestre to generate the report card for |
+      </Tab>
+    </Tabs>
+  </Accordion>
+
+  <Accordion title="Credencial del profesor" icon="id-badge">
+    An official professor credential card generated in PDF format.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Admin |
+    | URL | `/profesores/credencial/{id}` |
+    | Parameter | `id` — the professor record ID |
+    | Paper size | Letter, portrait |
+
+    The file is named using the professor's full name in uppercase.
+  </Accordion>
+
+  <Accordion title="Horario (admin)" icon="calendar">
+    The full class schedule for a specific licenciatura, generación, and cuatrimestre combination.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Admin |
+    | URL | `/admin/horarios/pdf/licenciatura/{slug}/generacion/{gen}/cuatrimestre/{slug}` |
+    | Parameters | `slug` — licenciatura slug; `gen` — generación identifier; `slug` — cuatrimestre slug |
+    | Paper size | Letter, portrait |
+  </Accordion>
+
+  <Accordion title="Horario del profesor" icon="chalkboard-user">
+    A schedule PDF showing only the classes assigned to a specific professor.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Professor (own schedule) |
+    | URL | `/profesor/pdf/horario/{profesor}` |
+    | Parameter | `profesor` — the professor record ID |
+  </Accordion>
+
+  <Accordion title="Horario del estudiante" icon="book-open">
+    A schedule PDF showing the full timetable for the student's enrolled licenciatura, generación, and cuatrimestre.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Student |
+    | URL | `/mi-horario/ver-horario` |
+
+    No additional parameters are required — the schedule is resolved automatically from the student's active enrollment.
+  </Accordion>
+
+  <Accordion title="Calificaciones generales" icon="table">
+    A class-wide grade matrix in landscape format, showing all students and subjects for a specific licenciatura, generación, and cuatrimestre. Includes a per-student truncated average.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Admin |
+    | URL | `/calificaciones/generales/licenciatura/{l}/generacion/{g}/cuatrimestre/{c}` |
+    | Parameters | `l` — licenciatura ID; `g` — generación ID; `c` — cuatrimestre ID |
+    | Paper size | Letter, landscape |
+
+    The file is named using the licenciatura name, generación, and cuatrimestre in uppercase.
+
+    <Note>
+      This report is only generated when at least one student with grades exists for the given group. An empty group returns a 404 response.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Kardex del alumno" icon="scroll">
+    The student's complete academic transcript, listing all subjects and grades across every cuatrimestre, plus per-term and overall cumulative averages.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Admin |
+    | URL | `/calificaciones/kardex-alumno/{alumno}` |
+    | Parameter | `alumno` — the student (Alumno) record ID |
+    | Paper size | Legal, portrait |
+
+    The file is named using the student's matricula number (e.g., `kardex-20240001.pdf`).
+  </Accordion>
+
+  <Accordion title="Lista de matrícula" icon="list">
+    A printable enrollment list that can be filtered by licenciatura, generación, cuatrimestre, or a name search. Results are ordered by enrollment date descending.
+
+    | Detail | Value |
+    |---|---|
+    | Who can access | Admin |
+    | URL | `/matricula/lista/{filtrar_licenciatura?}/{filtrar_generacion?}/{filtrar_cuatrimestre?}/{search?}` |
+    | Parameters | All parameters are optional; omit to include all enrolled students |
+    | Paper size | Letter, portrait |
+  </Accordion>
+</AccordionGroup>
+
+## Access summary by role
+
+<CardGroup cols={3}>
+  <Card title="Admin" icon="shield-halved">
+    Expediente del alumno, boleta de calificaciones, credencial del profesor, horario, calificaciones generales, kardex del alumno, lista de matrícula.
+  </Card>
+  <Card title="Professor" icon="chalkboard-user">
+    Horario del profesor (own schedule only), lista de alumnos.
+  </Card>
+  <Card title="Student" icon="graduation-cap">
+    Boleta de calificaciones (own, per cuatrimestre), horario del estudiante.
+  </Card>
+</CardGroup>
+
+<Info>
+  All PDFs open as inline streams in the browser. To save a copy, use your browser's print or save function from the PDF viewer.
+</Info>

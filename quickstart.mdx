@@ -1,80 +1,97 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: "Get started with SWCE"
+description: "Clone SWCE, install PHP and Node dependencies, configure the database environment, run migrations and seeds, and log in as admin in under ten minutes."
 ---
 
-## Get started in three steps
+This guide walks you through running SWCE on your local machine from a fresh clone to a working login. The entire process takes about five minutes assuming prerequisites are already installed.
 
-Get your documentation site running locally and make your first customization.
+## Prerequisites
 
-### Step 1: Set up your local environment
+Make sure you have the following installed before you begin:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+| Requirement | Minimum version |
+|---|---|
+| PHP | 8.2 |
+| Composer | 2 |
+| Node.js | 18 |
+| MySQL | 8 |
 
-### Step 2: Deploy your changes
+## Setup steps
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/xxRevenantx/SWCE.git
+    cd SWCE
+    ```
+  </Step>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+  <Step title="Install PHP dependencies">
+    ```bash
+    composer install
+    ```
+  </Step>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+  <Step title="Configure your environment">
+    Copy the example environment file and open it in your editor:
 
-### Step 3: Go live
+    ```bash
+    cp .env.example .env
+    ```
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+    Set your database credentials:
 
-## Next steps
+    ```ini
+    DB_DATABASE=swce
+    DB_USERNAME=your_db_user
+    DB_PASSWORD=your_db_password
+    ```
 
-Now that you have your docs running, explore these key features:
+    The default `APP_URL` in `.env.example` is `http://swce.test`. Change it to `http://localhost:8000` if you are using `php artisan serve`.
+  </Step>
 
-<CardGroup cols={2}>
+  <Step title="Generate the application key">
+    ```bash
+    php artisan key:generate
+    ```
+  </Step>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+  <Step title="Run database migrations">
+    ```bash
+    php artisan migrate
+    ```
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+    This creates all tables — users, permissions, students, professors, subjects, schedules, grades, enrollments, and more.
+  </Step>
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+  <Step title="Seed the database">
+    ```bash
+    php artisan db:seed
+    ```
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+    The seeder loads roles and permissions, countries, degree programs (licenciaturas), days, months, cohorts (cuatrimestres), generations, and an initial admin user. See [Installation](/installation) for details on what each seeder creates.
+  </Step>
 
-</CardGroup>
+  <Step title="Start the development servers">
+    ```bash
+    composer dev
+    ```
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+    <Note>
+      The `composer dev` script uses `concurrently` to run three processes at the same time: `php artisan serve` (the web server), `php artisan queue:listen --tries=1` (the job queue), and `npm run dev` (the Vite asset server). All three must be running for the application to work correctly in development.
+    </Note>
+  </Step>
+
+  <Step title="Log in">
+    Open [http://localhost:8000](http://localhost:8000) in your browser.
+
+    The default admin credentials created by the seeder are:
+
+    | Field | Value |
+    |---|---|
+    | Email | `admin@swce.com` |
+    | Password | `Swce#2026` |
+
+    You can override these before seeding by setting `DEFAULT_ADMIN_EMAIL` and `DEFAULT_ADMIN_PASSWORD` in your `.env` file.
+  </Step>
+</Steps>

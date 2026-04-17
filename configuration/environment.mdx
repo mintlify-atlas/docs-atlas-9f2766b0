@@ -1,0 +1,96 @@
+---
+title: "Environment configuration for SWCE"
+description: "Reference for every .env variable in SWCE — database connection, mail transport, session and cache drivers, queue backend, and filesystem disk settings."
+---
+
+SWCE reads all runtime configuration from a single `.env` file in the project root. This file is never committed to version control and must be created on every server where the application runs. The values here control how SWCE connects to your database, sends email, stores uploads, and handles background jobs.
+
+<Note>
+  To get started, copy the provided template: `cp .env.example .env`. Then fill in the values for your environment before running any `artisan` commands.
+</Note>
+
+<Warning>
+  Set `APP_DEBUG=false` in every production environment. Leaving debug mode enabled exposes stack traces and internal configuration details to anyone who can reach the application.
+</Warning>
+
+## Configuration reference
+
+<AccordionGroup>
+  <Accordion title="Application">
+    These variables control the identity and runtime mode of the application.
+
+    | Variable | Example value | Description |
+    |---|---|---|
+    | `APP_NAME` | `SWCE` | The name displayed in the UI and email subjects. |
+    | `APP_ENV` | `production` | Runtime environment. Use `production` on live servers, `local` for development. |
+    | `APP_DEBUG` | `false` | Set to `false` in production. When `true`, full error details are shown to users. |
+    | `APP_URL` | `https://swce.example.com` | The canonical public URL of the application, including the scheme. |
+    | `APP_LOCALE` | `es` | Default language for the UI. SWCE ships with Spanish (`es`) as the primary locale. |
+  </Accordion>
+
+  <Accordion title="Database">
+    SWCE requires a MySQL database. All five connection variables must be set correctly before running migrations.
+
+    | Variable | Example value | Description |
+    |---|---|---|
+    | `DB_CONNECTION` | `mysql` | Database driver. Use `mysql` for MySQL 8. |
+    | `DB_HOST` | `127.0.0.1` | Hostname or IP address of the database server. |
+    | `DB_PORT` | `3306` | TCP port the database listens on. |
+    | `DB_DATABASE` | `swce` | Name of the database schema to use. |
+    | `DB_USERNAME` | `swce_user` | Database user with full privileges on the schema. |
+    | `DB_PASSWORD` | *(secret)* | Password for the database user. |
+  </Accordion>
+
+  <Accordion title="Session & cache">
+    SWCE stores sessions and cache data in the database by default. No additional services are required.
+
+    | Variable | Default | Description |
+    |---|---|---|
+    | `SESSION_DRIVER` | `database` | Where sessions are stored. `database` is recommended for production. |
+    | `SESSION_LIFETIME` | `120` | Number of minutes before an idle session expires. |
+    | `CACHE_STORE` | `database` | Cache backend. `database` works out of the box; switch to `redis` for higher throughput. |
+
+    <Tip>
+      If you switch `SESSION_DRIVER` or `CACHE_STORE` to `redis`, also set `REDIS_HOST`, `REDIS_PASSWORD`, and `REDIS_PORT` to match your Redis instance.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="Queue">
+    Background jobs in SWCE (such as PDF generation and email dispatch) are processed through Laravel's queue system.
+
+    | Variable | Recommended value | Description |
+    |---|---|---|
+    | `QUEUE_CONNECTION` | `database` | Queue backend. `database` requires no extra infrastructure and is recommended for most deployments. |
+
+    <Info>
+      With `QUEUE_CONNECTION=database`, you must run a queue worker process on the server. See the [deployment guide](/configuration/deployment) for details.
+    </Info>
+  </Accordion>
+
+  <Accordion title="Mail">
+    Configure an SMTP relay or a transactional email provider to send notifications and credentials to users.
+
+    | Variable | Example value | Description |
+    |---|---|---|
+    | `MAIL_MAILER` | `smtp` | Transport to use. Set to `smtp` for production. The default `log` value writes mail to the log file instead of sending it. |
+    | `MAIL_HOST` | `smtp.mailgun.org` | Hostname of your SMTP server. |
+    | `MAIL_PORT` | `587` | SMTP port. Use `587` for TLS or `465` for SSL. |
+    | `MAIL_FROM_ADDRESS` | `noreply@swce.example.com` | The sender address that appears on all outgoing mail. |
+
+    <Warning>
+      The `.env.example` defaults (`MAIL_MAILER=log`, `MAIL_HOST=127.0.0.1`) are for local development only. Users will not receive any email until you configure a real SMTP provider.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Filesystem">
+    SWCE stores uploaded files such as student documents and profile photos on the local filesystem.
+
+    | Variable | Required value | Description |
+    |---|---|---|
+    | `FILESYSTEM_DISK` | `public` | Storage disk for uploads. Must be set to `public` so that uploaded files are accessible via the web server. |
+
+    <Info>
+      After deployment, run `php artisan storage:link` to create a symbolic link from `public/storage` to `storage/app/public`. Without this link, uploaded files will not be served correctly.
+    </Info>
+  </Accordion>
+</AccordionGroup>

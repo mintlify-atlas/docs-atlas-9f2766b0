@@ -1,97 +1,67 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "SWCE: Web-Based School Management System"
+description: "SWCE (Sistema Web de Control Escolar) centralizes student enrollment, schedules, grades, and academic records for administrators, professors, and students."
 ---
 
-## Setting up
+SWCE is a comprehensive school management platform built for educational institutions. It gives administrators full control over degree programs, student enrollment, and academic records, while providing professors and students with dedicated portals to manage their day-to-day academic activities.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get SWCE running in your environment in a few steps
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Installation" icon="server" href="/installation">
+    System requirements and full installation guide
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="User Roles" icon="users" href="/roles/overview">
+    Understand Admin, Professor, and Student roles
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Core Features" icon="graduation-cap" href="/features/enrollment">
+    Explore enrollment, schedules, grades, and documents
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## What SWCE manages
 
-Everything you need to create world-class documentation.
+SWCE handles the full academic lifecycle for multi-program institutions, from initial enrollment through grade reporting and document generation.
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
+<CardGroup cols={3}>
+  <Card title="Enrollment" icon="user-plus" href="/features/enrollment">
+    Manage student intake, matriculation, and academic records
   </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
+  <Card title="Schedules" icon="calendar" href="/features/schedules">
+    Build and assign class schedules by generation and semester
   </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
+  <Card title="Grades" icon="chart-bar" href="/features/grades">
+    Record, review, and export grade reports and transcripts
   </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
+  <Card title="Documents" icon="file-pdf" href="/features/documents">
+    Generate PDFs for credentials, report cards, and expedientes
   </Card>
-</Columns>
+  <Card title="Administration" icon="shield" href="/roles/admin">
+    Administer users, degree programs, subjects, and more
+  </Card>
+  <Card title="Deployment" icon="cloud" href="/configuration/deployment">
+    Deploy and configure SWCE for your institution
+  </Card>
+</CardGroup>
 
-## Need inspiration?
+## Getting started
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+<Steps>
+  <Step title="Install dependencies">
+    Clone the repository and run `composer install && npm install` to install all PHP and JavaScript dependencies.
+  </Step>
+  <Step title="Configure the environment">
+    Copy `.env.example` to `.env`, set your database credentials, and run `php artisan key:generate`.
+  </Step>
+  <Step title="Run migrations and seeders">
+    Run `php artisan migrate` followed by `php artisan db:seed` to create the schema and seed initial roles and permissions.
+  </Step>
+  <Step title="Log in and explore">
+    Start the development server with `composer dev`, then log in with an admin account to begin configuring degree programs, professors, and students.
+  </Step>
+</Steps>
+
+<Note>
+SWCE uses role-based access control. Every user is assigned one of three roles — **Admin**, **Profesor**, or **Estudiante** — and sees only the features relevant to their role.
+</Note>
